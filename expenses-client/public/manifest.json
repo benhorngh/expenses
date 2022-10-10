@@ -1,0 +1,14 @@
+{
+  "short_name": "Expenses",
+  "name": "Expenses web app",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
