@@ -7,8 +7,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAddressCard,
+  faFilter,
   faHome,
-  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import NavigationItem from "./NavigationItem";
 import { sidebarWidth } from "../common/constants";
@@ -90,16 +90,16 @@ export default function AppSidebar(props: AppSidebarProps) {
       <Divider />
       <List>
         <NavigationItem
+          text="records"
+          icon={<FontAwesomeIcon icon={faFilter} />}
+          open={props.open}
+          onClick={navigateTo("/records")}
+        />
+        <NavigationItem
           text="about"
           icon={<FontAwesomeIcon icon={faAddressCard} />}
           open={props.open}
           onClick={navigateTo("/about")}
-        />
-        <NavigationItem
-          text="more"
-          icon={<FontAwesomeIcon icon={faPlus} />}
-          open={props.open}
-          onClick={navigateTo("/more")}
         />
       </List>
     </Drawer>

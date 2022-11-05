@@ -13,3 +13,38 @@ export interface StatsModel {
   top_spending_amount: StatisticModel;
   top_spending_business: StatisticModel;
 }
+
+export interface RecordsModel {
+  records: RecordModel[];
+  sort_options: string[];
+  aggregate_options: string[];
+  type_options: string[];
+}
+
+export enum TransactionCategory {
+  EXPENSE = "expense",
+  INCOME = "income",
+}
+export enum TransactionType {
+  CARD = "CARD",
+  BANK = "BANK",
+}
+
+export interface RecordModel {
+  t_id?: string;
+  t_date?: string;
+  money?: number;
+  business?: string;
+  card?: string;
+  category?: TransactionCategory;
+  t_type?: TransactionType;
+  count?: string;
+  avg?: string;
+}
+
+export interface RecordsSelection {
+  aggregate?: string;
+  sort_by?: string;
+  include?: string;
+  desc?: boolean;
+}

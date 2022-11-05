@@ -1,0 +1,7 @@
+export const COLOR_PALETTE = {
+  PRIMARY: "#01B636",
+  SECONDERY: "#3BD16F",
+  INCOME: "#98FB98",
+  EXPENSE: "#FFD1D1",
+  INFO_CARD: "#EEE8AA",
+};

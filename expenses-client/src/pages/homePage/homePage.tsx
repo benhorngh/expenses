@@ -1,11 +1,10 @@
 import { Box, Divider } from "@mui/material";
 import { useGetStates } from "../../common/api";
-import { BasePageProps } from "../../pageComponents/appWrapper";
 import { ErrorPage } from "../components/error";
 import { PageLoader } from "../components/loader";
 import { BigStatsSection, SmallStatsSection } from "./statsSections";
 
-const HomePage: React.FC<BasePageProps> = (props) => {
+const HomePage: React.FC = () => {
   const getStats = useGetStates();
 
   if (getStats.isLoading) {
@@ -17,7 +16,7 @@ const HomePage: React.FC<BasePageProps> = (props) => {
   }
 
   return (
-    <Box paddingLeft={25} paddingRight={15}>
+    <Box>
       <BigStatsSection stats={getStats.data} />
       <Divider sx={{ marginY: 5 }} />
       <SmallStatsSection stats={getStats.data} />

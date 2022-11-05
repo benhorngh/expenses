@@ -5,6 +5,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Stack } from "@mui/material";
 import { StatsModel } from "../../common/models";
+import { COLOR_PALETTE } from "../../common/style/palette";
 import { BigStatistic, SmallStatistic } from "./stats";
 
 interface StatsSectionProps {
@@ -17,13 +18,13 @@ export const BigStatsSection: React.FC<StatsSectionProps> = (props) => {
       title: "Income",
       stat: props.stats.income,
       icon: faSackDollar,
-      color: "#98FB98",
+      color: COLOR_PALETTE.INCOME,
     },
     {
       title: "Expense",
       stat: props.stats.expenses,
       icon: faCreditCard,
-      color: "#FFD1D1",
+      color: COLOR_PALETTE.EXPENSE,
     },
     {
       title: "Current Balance",
@@ -80,7 +81,11 @@ export const SmallStatsSection: React.FC<StatsSectionProps> = (props) => {
       alignItems="flex-start"
     >
       {stats.map((statProps, index) => (
-        <SmallStatistic key={index} color="#EEE8AA" {...statProps} />
+        <SmallStatistic
+          key={index}
+          color={COLOR_PALETTE.INFO_CARD}
+          {...statProps}
+        />
       ))}
     </Stack>
   );

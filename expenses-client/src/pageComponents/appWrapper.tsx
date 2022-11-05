@@ -1,14 +1,10 @@
 import Box from "@mui/material/Box";
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import AppHeader from "./appHeader";
 import AppSidebar, { DrawerHeader } from "./appSidebar";
 
-export interface BasePageProps {
-  sidebarOpen: boolean;
-}
-
 interface AppWrapperProps {
-  element: React.FC<unknown & BasePageProps>;
+  children: ReactElement;
 }
 
 export default function AppWrapper(props: AppWrapperProps) {
@@ -20,7 +16,9 @@ export default function AppWrapper(props: AppWrapperProps) {
       <AppSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
       <Box sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        {props.element({ sidebarOpen })}
+        <Box paddingLeft={25} paddingRight={15}>
+          {props.children}
+        </Box>
       </Box>
     </Box>
   );
