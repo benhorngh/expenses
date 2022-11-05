@@ -50,13 +50,34 @@ def get_average_per_category_per_month(df: pd.DataFrame):
 
 def get_expense_by_business(df: pd.DataFrame):
     # name, count, sum, avg
-    df = df[df['t_type'] == TransactionType.CARD]
-    data = []
-    for business in df['business'].unique():
-        bus_df = df[df['business'] == business]
-        data.append(
-            {"name": business, "count": len(bus_df), "sum": bus_df['money'].sum(), "avg": bus_df['money'].mean()})
-    return pd.DataFrame(data=data).sort_values(by=['count'], ascending=False, ignore_index=True)
+    df[N.AVG] = df[C.MONEY].copy()
+    by_business = df[[C.BUSINESS, C.T_DATE, C.MONEY, N.AVG]].groupby(C.BUSINESS).agg({C.T_DATE: 'count',
+                                                                                      C.MONEY: 'sum',
+                                                                                      N.AVG: 'mean'}).reset_index()
+    by_business.rename(columns={C.T_DATE: N.COUNT}, inplace=True)
+    return by_business
+
+
+def get_expense_by_month(df: pd.DataFrame):
+    by_month = df[[N.MONTH, C.MONEY]].groupby(N.MONTH).agg({C.MONEY: 'sum'}).reset_index()
+    by_month.rename(columns={N.MONTH: C.T_DATE}, inplace=True)
+    return by_month
+
+
+def sort_by_date(df: pd.DataFrame, desc: bool = False):
+    if C.T_DATE not in df.columns:
+        return df
+    return df.sort_values(by=[C.T_DATE], ascending=not desc, ignore_index=True)
+
+
+def sort_by_amount(df: pd.DataFrame, desc: bool = False):
+    if C.MONEY not in df.columns:
+        return df
+    return df.sort_values(by=[C.MONEY], ascending=not desc, ignore_index=True)
+
+
+def get_cards_options(df: pd.DataFrame):
+    return list(filter(lambda item: item is not None, df[C.CARD].unique()))
 
 
 def get_expenses(df: pd.DataFrame) -> pd.DataFrame:
@@ -120,9 +141,8 @@ def get_top_spending_amount(df: pd.DataFrame) -> StatisticModel:
 
 def get_top_spending_business(df: pd.DataFrame) -> StatisticModel:
     card_expenses = get_expenses(get_card_transactions(df))
-    businesses = card_expenses[[C.BUSINESS, C.T_DATE, C.MONEY]].groupby(C.BUSINESS).agg({C.T_DATE: 'count',
-                                                                                         C.MONEY: 'sum'}).reset_index()
+    businesses = get_expense_by_business(card_expenses)
     top_business = businesses[businesses[C.MONEY] == businesses[C.MONEY].min()].head(1)
     return StatisticModel(value=top_business[C.MONEY].values[0],
                           additional_info=user_interface_service.business_visits(top_business[C.BUSINESS].values[0],
-                                                                                 top_business[C.T_DATE].values[0]))
+                                                                                 top_business[N.COUNT].values[0]))
