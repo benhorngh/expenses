@@ -22,9 +22,17 @@ export interface RecordsModel {
 }
 
 export enum TransactionCategory {
-  EXPENSE = "expense",
-  INCOME = "income",
+  HOME_UTILS = "home_utils",
+  FOOD = "food",
+  RESTAURANT = "restaurant",
+  DELIVERY = "delivery",
+  FUN = "fun",
+  SALARY = "salary",
+  CARD = "card",
+  RENT = "rent",
+  CAR = "car",
 }
+
 export enum TransactionType {
   CARD = "CARD",
   BANK = "BANK",
@@ -47,4 +55,8 @@ export interface RecordsSelection {
   sort_by?: string;
   include?: string;
   desc?: boolean;
+}
+
+export interface RecordsUpdate {
+  category?: TransactionCategory;
 }

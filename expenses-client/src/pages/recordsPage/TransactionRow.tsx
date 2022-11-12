@@ -2,6 +2,8 @@ import { alpha, Box, Grid, styled } from "@mui/material";
 import { renderDate } from "../../common/dateUtils";
 import { RecordModel } from "../../common/models";
 import { COLOR_PALETTE } from "../../common/style/palette";
+import { renderMoney } from "../../common/utils";
+import RecordOptions from "./RecordOptions";
 
 interface TransactionRowProps {
   record: RecordModel;
@@ -28,7 +30,7 @@ const TransactionRow: React.FC<TransactionRowProps> = (props) => {
     <RecordContainer cardcolor={cardColor}>
       <Grid container>
         <Grid item xs={2}>
-          {props.record.money}
+          {renderMoney(props.record.money)}
         </Grid>
         <Grid item xs={4}>
           {props.record.business}
@@ -38,6 +40,12 @@ const TransactionRow: React.FC<TransactionRowProps> = (props) => {
             {renderDate(props.record.t_date) || ""}
           </Grid>
         )}
+        <Grid item xs>
+          {props.record.category}
+        </Grid>
+        <Grid item xs={1}>
+          <RecordOptions record={props.record} />
+        </Grid>
       </Grid>
     </RecordContainer>
   );

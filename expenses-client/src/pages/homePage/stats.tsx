@@ -66,7 +66,7 @@ export const SmallStatistic: React.FC<SmallStatisticProps> = (props) => {
           <Box
             sx={{
               top: "0px",
-              left: "0px%",
+              left: "0px",
               position: "absolute",
               opacity: 0.5,
             }}
