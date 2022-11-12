@@ -3,15 +3,22 @@ from enum import Enum
 from typing import Union, Optional, List
 
 import pydantic
-from pydantic import BaseModel, validator
+from pydantic import BaseModel
 
 
-class TransactionCategory(Enum):
-    INCOME = 'income'
-    EXPENSE = 'expense'
+class TransactionCategory(str, Enum):
+    HOME_UTILS = 'home_utils'
+    FOOD = 'food'
+    RESTAURANT = 'restaurant'
+    DELIVERY = 'delivery'
+    FUN = 'fun'
+    CAR = 'car'
+    SALARY = 'salary'
+    CARD = 'card'
+    RENT = 'rent'
 
 
-class TransactionType(Enum):
+class TransactionType(str, Enum):
     BANK = 'bank'
     CARD = 'card'
 
@@ -67,6 +74,10 @@ class RecordsResponseModel(BaseModel):
     aggregate_options: List[str]
 
 
+class RecordsUpdate(BaseModel):
+    category: Optional[TransactionCategory]
+
+
 class AggregateBy(Enum):
     BUSINESS = 'business'
     MONTH = 'month'
@@ -92,6 +103,7 @@ class RecordsRequest(BaseModel):
 
 
 class C(str, Enum):
+    T_ID = 't_id'
     T_DATE = "t_date"
     BUSINESS = "business"
     CARD = "card"
@@ -101,6 +113,7 @@ class C(str, Enum):
 
 
 class N(str, Enum):
+    IS_INCOME = 'is_income'
     MONTH = 'n_date'
     COUNT = 'count'
     AVG = 'avg'

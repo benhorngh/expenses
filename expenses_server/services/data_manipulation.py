@@ -1,17 +1,19 @@
 import pandas as pd
 
-from expenses_server.common.models import TransactionType, C, N, StatisticModel
-from expenses_server.services import simple_categorize, user_interface_service
+from expenses_server.common.models import TransactionType, C, N, StatisticModel, TransactionCategory
+from expenses_server.services import user_interface_service
 
 
 def numpy_to_int(func):
     def wrapper(*args, **kwargs):
         return int(func(*args, **kwargs))
+
     return wrapper
 
 
 def prepare_date(df: pd.DataFrame):
     add_month_column(df)
+    categorize_income_outcome(df)
 
 
 def add_month_column(df: pd.DataFrame):
@@ -27,12 +29,16 @@ def get_card_transactions(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def categorize_income_outcome(df: pd.DataFrame):
-    simple_categorize.categorize_transactions(df)
+    df[N.IS_INCOME] = df[C.MONEY].map(lambda v: v < 0)
     return df
 
 
 def get_average_per_category(df: pd.DataFrame):
-    return df.groupby("category")['money'].mean()
+    return df.groupby(N.IS_INCOME)[C.MONEY].mean()
+
+
+def set_category_by_business(df: pd.DataFrame, business: str, category: TransactionCategory):
+    df[C.CATEGORY] = df.apply(lambda x: category if x[C.BUSINESS] == business else x[C.CATEGORY], axis=1)
 
 
 def get_average_per_category_per_month(df: pd.DataFrame):
@@ -50,10 +56,11 @@ def get_average_per_category_per_month(df: pd.DataFrame):
 
 def get_expense_by_business(df: pd.DataFrame):
     # name, count, sum, avg
-    df[N.AVG] = df[C.MONEY].copy()
-    by_business = df[[C.BUSINESS, C.T_DATE, C.MONEY, N.AVG]].groupby(C.BUSINESS).agg({C.T_DATE: 'count',
-                                                                                      C.MONEY: 'sum',
-                                                                                      N.AVG: 'mean'}).reset_index()
+    data = df.copy()
+    data[N.AVG] = data[C.MONEY].copy()
+    by_business = data[[C.BUSINESS, C.T_DATE, C.MONEY, N.AVG]].groupby(C.BUSINESS).agg({C.T_DATE: 'count',
+                                                                                        C.MONEY: 'sum',
+                                                                                        N.AVG: 'mean'}).reset_index()
     by_business.rename(columns={C.T_DATE: N.COUNT}, inplace=True)
     return by_business
 

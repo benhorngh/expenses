@@ -15,7 +15,7 @@ def init_settings():
 
 
 def init_data():
-    utils.init_db()
+    utils.init_db(override=True)
 
 
 def init_api():

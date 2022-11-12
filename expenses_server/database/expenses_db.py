@@ -12,3 +12,5 @@ class ExpensesDB(abc.ABC):
     def get_all_transaction(self) -> pd.DataFrame:
         raise NotImplementedError()
 
+    def load_data(self) -> None:
+        raise NotImplementedError()

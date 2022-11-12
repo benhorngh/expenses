@@ -22,7 +22,8 @@ class LeumiReader(AbstractDataReader):
         return Transaction(t_date=get_t_date(row.get(0)),
                            business=row.get(2),
                            money=(row.get(4) * -1) + row.get(5),
-                           t_id=(row.get(3)))
+                           # t_id=(row.get(3))
+                           )
 
 
 if __name__ == '__main__':

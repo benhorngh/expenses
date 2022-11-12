@@ -10,7 +10,6 @@ from expenses_server.services import data_manipulation
 
 def get_records(search: RecordsRequest) -> RecordsResponseModel:
     data = AppSettings.settings.db_instance.get_all_transaction()
-    data_manipulation.categorize_income_outcome(data)
     data_manipulation.prepare_date(data)
     records = apply_search(data, search)
     return RecordsResponseModel(records=convert_to_transactions(records),

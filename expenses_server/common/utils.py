@@ -1,5 +1,6 @@
 import pandas as pd
 
+from expenses_server.common.models import C
 from expenses_server.readers.cal_reader import CalReader
 from expenses_server.readers.leumi_reader import LeumiReader
 from expenses_server.readers.max_foreign_curr_reader import MaxForeignCurrencyReader
@@ -17,7 +18,16 @@ def read_all_data():
     return pd.concat([cal, max_cards, max_foreign_cards, leumi])
 
 
-def init_db():
-    data = read_all_data()
-    AppSettings.settings.db_instance.store_all_transaction(data)
+def generate_transaction_id(row):
+    date_str = row[C.T_DATE].date().isoformat()
+    money_str = str(abs(row[C.MONEY])).replace(".", "-")
+    business_str = '-'.join([str(ord(c)) for c in row[C.BUSINESS].replace(" ", "-")[:3]])
+    return f't_{date_str}_{money_str}_{business_str}'
 
+
+def init_db(override: bool):
+    if override:
+        data = read_all_data()
+        data[C.T_ID] = data.apply(generate_transaction_id, axis=1)
+        AppSettings.settings.db_instance.store_all_transaction(data)
+    AppSettings.settings.db_instance.load_data()
