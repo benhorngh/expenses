@@ -23,3 +23,6 @@ class DummyDB(ExpensesDB):
         data = pd.read_csv(FILE_NAME, parse_dates=[C.T_DATE])
         data = data.replace({np.nan: None})
         DummyDB._TRANSACTIONS = data
+
+    def is_db_exist(self):
+        return os.path.isfile(FILE_NAME)

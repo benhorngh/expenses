@@ -2,14 +2,15 @@ from datetime import datetime
 
 import pandas as pd
 
-from expenses_server.common.models import Transaction, TransactionType
-from expenses_server.readers.abstract_read_data import AbstractDataReader
+from expenses_server.common.models import Transaction, C, TransactionType
+from expenses_server.readers.abstract_read_data import AbstractDataReader, OverrideColumn
 
 
 class LeumiReader(AbstractDataReader):
 
-    def __init__(self, file_path: str):
-        super().__init__(file_path, TransactionType.BANK)
+    def __init__(self, file_path: str, **kwargs):
+        override_by_class = [OverrideColumn(column_name=C.T_TYPE, value=TransactionType.BANK)]
+        super().__init__(file_path, override_by_class=override_by_class, **kwargs)
 
     def read_file(self) -> pd.DataFrame:
         return pd.read_html(self._file_path, skiprows=[0, 1])[1]

@@ -14,8 +14,10 @@ class TransactionCategory(str, Enum):
     FUN = 'fun'
     CAR = 'car'
     SALARY = 'salary'
-    CARD = 'card'
     RENT = 'rent'
+    CARD = 'card'
+    GADGETS = 'gadgets'
+    BILLS = 'bills'
 
 
 class TransactionType(str, Enum):
@@ -28,9 +30,9 @@ class Transaction(BaseModel):
     t_date: datetime = None
     money: float = None
     business: str = None
-    card: str = None
     category: TransactionCategory = None
     t_type: TransactionType = None
+    type_id: str = None
 
 
 class Record(Transaction):
@@ -38,9 +40,9 @@ class Record(Transaction):
     t_date: datetime = None
     money: float = None
     business: str = None
-    card: str = None
     category: TransactionCategory = None
     t_type: TransactionType = None
+    type_id: str = None
     count: str = 1
     avg: str = None
 
@@ -75,7 +77,13 @@ class RecordsResponseModel(BaseModel):
 
 
 class RecordsUpdate(BaseModel):
-    category: Optional[TransactionCategory]
+    category: Optional[TransactionCategory] = None
+
+
+class ChangeCategoryRequest(BaseModel):
+    businesses: Optional[List[str]] = None
+    transactions_ids: Optional[List[str]] = None
+    record: RecordsUpdate
 
 
 class AggregateBy(Enum):
@@ -106,10 +114,10 @@ class C(str, Enum):
     T_ID = 't_id'
     T_DATE = "t_date"
     BUSINESS = "business"
-    CARD = "card"
     MONEY = "money"
     CATEGORY = "category"
     T_TYPE = "t_type"
+    TYPE_ID = "type_id"
 
 
 class N(str, Enum):

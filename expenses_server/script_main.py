@@ -22,3 +22,5 @@ if __name__ == "__main__":
 
     data = AppSettings.settings.db_instance.get_all_transaction()
     print(statistics_service.get_statistics())
+    AppSettings.settings.db_instance.store_all_transaction(data)
+

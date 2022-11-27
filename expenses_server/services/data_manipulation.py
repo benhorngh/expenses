@@ -41,6 +41,10 @@ def set_category_by_business(df: pd.DataFrame, business: str, category: Transact
     df[C.CATEGORY] = df.apply(lambda x: category if x[C.BUSINESS] == business else x[C.CATEGORY], axis=1)
 
 
+def set_category_by_transaction_id(df: pd.DataFrame, transaction_id: str, category: TransactionCategory):
+    df[C.CATEGORY] = df.apply(lambda x: category if x[C.T_ID] == transaction_id else x[C.CATEGORY], axis=1)
+
+
 def get_average_per_category_per_month(df: pd.DataFrame):
     categories = df['category'].unique()
     df['month'] = df['t_date'].map(lambda d: f'{d.year}-{d.month}')
@@ -55,12 +59,18 @@ def get_average_per_category_per_month(df: pd.DataFrame):
 
 
 def get_expense_by_business(df: pd.DataFrame):
-    # name, count, sum, avg
+    # name, count, sum, avg, category
+
+    def agg_category(x: pd.Series):
+        if len(x.unique()) == 1:
+            return x.unique()[0]
+        return None
     data = df.copy()
     data[N.AVG] = data[C.MONEY].copy()
-    by_business = data[[C.BUSINESS, C.T_DATE, C.MONEY, N.AVG]].groupby(C.BUSINESS).agg({C.T_DATE: 'count',
-                                                                                        C.MONEY: 'sum',
-                                                                                        N.AVG: 'mean'}).reset_index()
+    by_business = data[[C.BUSINESS, C.T_DATE, C.MONEY, N.AVG, C.CATEGORY]].groupby(C.BUSINESS).agg({C.T_DATE: 'count',
+                                                                                                    C.MONEY: 'sum',
+                                                                                                    N.AVG: 'mean',
+                                                                                                    C.CATEGORY: agg_category}).reset_index()
     by_business.rename(columns={C.T_DATE: N.COUNT}, inplace=True)
     return by_business
 
@@ -84,7 +94,7 @@ def sort_by_amount(df: pd.DataFrame, desc: bool = False):
 
 
 def get_cards_options(df: pd.DataFrame):
-    return list(filter(lambda item: item is not None, df[C.CARD].unique()))
+    return list(filter(lambda item: item is not None, df[C.TYPE_ID].unique()))
 
 
 def get_expenses(df: pd.DataFrame) -> pd.DataFrame:

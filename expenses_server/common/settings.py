@@ -8,6 +8,7 @@ class DataFiles(BaseModel):
     cal_file_path: str
     max_file_path: str
     leumi_file_path: str
+    pepper_file_path: str
 
 
 class Settings(BaseModel):
@@ -26,6 +27,7 @@ def init_settings(db_instance: ExpensesDB):
     values = dotenv_values()
     data_files = DataFiles(max_file_path=values['MAX_FILE_NAME'],
                            cal_file_path=values['CAL_FILE_NAME'],
-                           leumi_file_path=values['LEUMI_FILE_NAME']
+                           leumi_file_path=values['LEUMI_FILE_NAME'],
+                           pepper_file_path=values['PEPPER_FILE_NAME']
                            )
     AppSettings.settings = Settings(db_instance=db_instance, data_files=data_files)

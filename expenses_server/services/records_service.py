@@ -1,3 +1,4 @@
+import traceback
 from typing import List
 
 import pandas as pd
@@ -53,7 +54,13 @@ def apply_search(data: pd.DataFrame, search: RecordsRequest):
 
 
 def convert_to_transactions(data: pd.DataFrame) -> List[Transaction]:
-    transactions = [Transaction(**t) for t in data.to_dict('records')]
+    transactions = []
+    for t in data.to_dict('records'):
+        try:
+            transactions.append(Transaction(**t))
+        except:
+            traceback.print_exc()
+            raise
     return transactions
 
 

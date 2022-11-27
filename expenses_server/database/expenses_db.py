@@ -14,3 +14,6 @@ class ExpensesDB(abc.ABC):
 
     def load_data(self) -> None:
         raise NotImplementedError()
+
+    def is_db_exist(self) -> None:
+        raise NotImplementedError()
