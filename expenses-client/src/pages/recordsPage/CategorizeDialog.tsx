@@ -13,9 +13,11 @@ import {
   faCarSide,
   faChampagneGlasses,
   faCircleCheck,
+  faDroplet,
   faHouseChimney,
   faHouseUser,
   faKitchenSet,
+  faMobileScreen,
   faMotorcycle,
   faSackDollar,
 } from "@fortawesome/free-solid-svg-icons";
@@ -25,10 +27,50 @@ import { COLOR_PALETTE } from "../../common/style/palette";
 
 interface CategorizeDialogProps {
   children: React.ReactElement;
-  onClose: () => void;
   category?: TransactionCategory;
+  onClose?: () => void;
   onSave: (category?: TransactionCategory) => void;
 }
+
+export const CATEGORIES = [
+  {
+    name: TransactionCategory.HOME_UTILS,
+    icon: faHouseUser,
+    text: "Maintenance",
+    income: false,
+  },
+  { name: TransactionCategory.FOOD, icon: faKitchenSet, text: "Food" },
+  {
+    name: TransactionCategory.RESTAURANT,
+    icon: faBurger,
+    text: "Restaurant",
+  },
+  {
+    name: TransactionCategory.DELIVERY,
+    icon: faMotorcycle,
+    text: "Delivery",
+  },
+  { name: TransactionCategory.FUN, icon: faChampagneGlasses, text: "Fun" },
+  {
+    name: TransactionCategory.SALARY,
+    icon: faSackDollar,
+    text: "Salary",
+    income: true,
+  },
+  {
+    name: TransactionCategory.CARD,
+    icon: faCreditCard,
+    text: "Credit",
+  },
+  { name: TransactionCategory.RENT, icon: faHouseChimney, text: "Rent" },
+  { name: TransactionCategory.CAR, icon: faCarSide, text: "Car" },
+  { name: TransactionCategory.BILLS, icon: faDroplet, text: "Bills" },
+  {
+    name: TransactionCategory.GADGETS,
+    icon: faMobileScreen,
+    text: "Gadgets",
+  },
+];
 
 const CategoryOptionContainer = styled(Stack)<{ selected: boolean }>(
   ({ theme, selected }) => ({
@@ -64,47 +106,18 @@ export default function CategorizeDialog(props: CategorizeDialogProps) {
   };
 
   const handleCancel = () => handleClose();
-  const handleDone = () => {
-    props.onSave(selected);
+  // const handleDone = () => {
+  //   saveAndClose(selected);
+  // };
+  const saveAndClose = (selection?: TransactionCategory) => {
+    props.onSave(selection);
     handleClose();
   };
 
-  const handleSelected = (Category: TransactionCategory) => () =>
-    setSelected(Category);
-
-  const categories = [
-    {
-      name: TransactionCategory.HOME_UTILS,
-      icon: faHouseUser,
-      text: "Maintenance",
-      income: false,
-    },
-    { name: TransactionCategory.FOOD, icon: faKitchenSet, text: "Food" },
-    {
-      name: TransactionCategory.RESTAURANT,
-      icon: faBurger,
-      text: "Restaurant",
-    },
-    {
-      name: TransactionCategory.DELIVERY,
-      icon: faMotorcycle,
-      text: "Delivery",
-    },
-    { name: TransactionCategory.FUN, icon: faChampagneGlasses, text: "Fun" },
-    {
-      name: TransactionCategory.SALARY,
-      icon: faSackDollar,
-      text: "Salary",
-      income: true,
-    },
-    {
-      name: TransactionCategory.CARD,
-      icon: faCreditCard,
-      text: "Credit",
-    },
-    { name: TransactionCategory.RENT, icon: faHouseChimney, text: "Rent" },
-    { name: TransactionCategory.CAR, icon: faCarSide, text: "Car" },
-  ];
+  const handleSelected = (Category: TransactionCategory) => () => {
+    setSelected(selected !== Category ? Category : undefined);
+    saveAndClose(selected !== Category ? Category : undefined);
+  };
 
   return (
     <div>
@@ -116,7 +129,7 @@ export default function CategorizeDialog(props: CategorizeDialogProps) {
             Select transactions cateogry
           </DialogContentText>
           <Box maxWidth="600px" flexWrap="wrap" display="flex">
-            {categories.map((category) => (
+            {CATEGORIES.map((category) => (
               <CategoryOptionContainer
                 selected={selected === category.name}
                 onClick={handleSelected(category.name)}
@@ -154,7 +167,7 @@ export default function CategorizeDialog(props: CategorizeDialogProps) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel}>Cancel</Button>
-          <Button onClick={handleDone}>Done</Button>
+          {/* <Button onClick={handleDone}>Done</Button> */}
         </DialogActions>
       </Dialog>
     </div>

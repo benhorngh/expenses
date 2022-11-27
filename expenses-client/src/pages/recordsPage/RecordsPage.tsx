@@ -40,7 +40,7 @@ const RecordsPage: React.FC = () => {
   }
   return (
     <Stack spacing={3}>
-      <Stack direction="row" spacing={3}>
+      <Stack direction="row" spacing={3} alignItems="center">
         <BasicSelect
           selected={include}
           onChange={handleIncludeChange}
@@ -76,7 +76,7 @@ const RecordsPage: React.FC = () => {
         </Stack>
       </Stack>
       <Divider flexItem orientation="horizontal" />
-      <Stack spacing={2}>
+      <Stack direction="row" flexWrap="wrap">
         {getRecords.data.records
           .slice(0, 100)
           .map((record: RecordModel, index: number) => (

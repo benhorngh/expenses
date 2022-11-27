@@ -1,3 +1,4 @@
+import { queryClient } from "./reactQueryClient";
 import {
   RecordsModel,
   RecordsSelection,
@@ -27,21 +28,30 @@ export function useGetRecords(recordsSelect: RecordsSelection) {
   return useQuery(["records", recordsSelect], () => getRecords(recordsSelect));
 }
 
-async function updateRecords(business, update: RecordsUpdate) {
-  const { data } = await httpClient.patch<RecordsModel>(
-    "/records",
-    { update: update },
-    {
-      params: { business_name: business },
-    }
-  );
+async function updateRecords(
+  transactions_ids: string[],
+  businesses: string[],
+  update: RecordsUpdate
+) {
+  const { data } = await httpClient.patch<RecordsModel>("/records", {
+    record: update,
+    businesses,
+    transactions_ids,
+  });
   return data;
 }
 
 export function useUpdateRecords() {
   return useMutation({
-    mutationFn: (data: { business: string; update: RecordsUpdate }) => {
-      return updateRecords(data.business, data.update);
+    mutationFn: (data: {
+      transactions_ids: string[];
+      businesses: string[];
+      update: RecordsUpdate;
+    }) => {
+      return updateRecords(data.transactions_ids, data.businesses, data.update);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries("records");
     },
   });
 }

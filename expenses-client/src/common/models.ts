@@ -31,6 +31,8 @@ export enum TransactionCategory {
   CARD = "card",
   RENT = "rent",
   CAR = "car",
+  GADGETS = "gadgets",
+  BILLS = "bills",
 }
 
 export enum TransactionType {
@@ -46,6 +48,7 @@ export interface RecordModel {
   card?: string;
   category?: TransactionCategory;
   t_type?: TransactionType;
+  type_id?: TransactionType;
   count?: string;
   avg?: string;
 }
