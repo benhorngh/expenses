@@ -35,7 +35,7 @@ def get_card_transactions(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def categorize_income_outcome(df: pd.DataFrame):
-    df[N.IS_INCOME] = df[C.MONEY].map(lambda v: v < 0)
+    df[N.IS_INCOME] = df[C.MONEY].map(lambda v: v >= 0)
     return df
 
 
