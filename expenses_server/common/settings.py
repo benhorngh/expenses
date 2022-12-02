@@ -11,9 +11,15 @@ class DataFiles(BaseModel):
     pepper_file_path: str
 
 
+class MoneyLoverData(BaseModel):
+    wallet_name: str
+    auth_token: str
+
+
 class Settings(BaseModel):
     db_instance: ExpensesDB
     data_files: DataFiles
+    money_lover: MoneyLoverData
 
     class Config:
         arbitrary_types_allowed = True
@@ -30,4 +36,5 @@ def init_settings(db_instance: ExpensesDB):
                            leumi_file_path=values['LEUMI_FILE_NAME'],
                            pepper_file_path=values['PEPPER_FILE_NAME']
                            )
-    AppSettings.settings = Settings(db_instance=db_instance, data_files=data_files)
+    money_lover = MoneyLoverData(wallet_name=values['WALLET_NAME'], auth_token=values['AUTH_TOKEN'])
+    AppSettings.settings = Settings(db_instance=db_instance, data_files=data_files, money_lover=money_lover)

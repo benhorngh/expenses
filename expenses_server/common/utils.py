@@ -1,6 +1,6 @@
 import pandas as pd
 
-from expenses_server.common.models import C
+from expenses_server.common.models import C, SpecialTypeId
 from expenses_server.readers.cal_reader import CalReader
 from expenses_server.readers.leumi_reader import LeumiReader
 from expenses_server.readers.max_foreign_curr_reader import MaxForeignCurrencyReader
@@ -13,15 +13,15 @@ from readers.pepper_reader import PepperReader
 def read_all_data():
     data_files = AppSettings.settings.data_files
     cal = CalReader(data_files.cal_file_path,
-                    custom_override=[OverrideColumn(column_name=C.TYPE_ID, value="cal")]
+                    custom_override=[OverrideColumn(column_name=C.TYPE_ID, value=SpecialTypeId.CREDIT_CARD_CAL)]
                     ).start()
     max_cards = MaxReader(data_files.max_file_path).start()
     max_foreign_cards = MaxForeignCurrencyReader(data_files.max_file_path).start()
     leumi = LeumiReader(data_files.leumi_file_path,
-                        custom_override=[OverrideColumn(column_name=C.TYPE_ID, value="leumi")]
+                        custom_override=[OverrideColumn(column_name=C.TYPE_ID, value=SpecialTypeId.BANK_LEUMI)]
                         ).start()
     pepper = PepperReader(data_files.pepper_file_path,
-                          custom_override=[OverrideColumn(column_name=C.TYPE_ID, value="pepper")]
+                          custom_override=[OverrideColumn(column_name=C.TYPE_ID, value=SpecialTypeId.BANK_PEPPER)]
                           ).start()
 
     return pd.concat([cal, max_cards, max_foreign_cards, leumi, pepper])

@@ -1,11 +1,7 @@
-from fastapi import FastAPI
-
 from expenses_server.common import settings, utils
 from expenses_server.database.dummy_db import DummyDB
 from expenses_server.services import statistics_service
 from expenses_server.common.settings import AppSettings
-
-app = FastAPI()
 
 
 def init_settings():

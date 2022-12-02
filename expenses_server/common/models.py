@@ -18,11 +18,19 @@ class TransactionCategory(str, Enum):
     CARD = 'card'
     GADGETS = 'gadgets'
     BILLS = 'bills'
+    UNKNOWN_INCOME = 'unknown_income'
+    UNKNOWN_EXPENSE = 'unknown_expense'
 
 
 class TransactionType(str, Enum):
     BANK = 'bank'
     CARD = 'card'
+
+
+class SpecialTypeId(str, Enum):
+    BANK_LEUMI = 'leumi'
+    BANK_PEPPER = 'pepper'
+    CREDIT_CARD_CAL = 'cal'
 
 
 class Transaction(BaseModel):

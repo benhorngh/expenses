@@ -1,3 +1,5 @@
+from typing import List
+
 import pandas as pd
 
 from expenses_server.common.models import TransactionType, C, N, StatisticModel, TransactionCategory
@@ -22,6 +24,10 @@ def add_month_column(df: pd.DataFrame):
 
 def get_bank_transactions(df: pd.DataFrame) -> pd.DataFrame:
     return df[df[C.T_TYPE] == TransactionType.BANK]
+
+
+def get_by_type_id(df: pd.DataFrame, type_ids: List[str]) -> pd.DataFrame:
+    return df[df[C.TYPE_ID].isin(type_ids)]
 
 
 def get_card_transactions(df: pd.DataFrame) -> pd.DataFrame:
@@ -65,6 +71,7 @@ def get_expense_by_business(df: pd.DataFrame):
         if len(x.unique()) == 1:
             return x.unique()[0]
         return None
+
     data = df.copy()
     data[N.AVG] = data[C.MONEY].copy()
     by_business = data[[C.BUSINESS, C.T_DATE, C.MONEY, N.AVG, C.CATEGORY]].groupby(C.BUSINESS).agg({C.T_DATE: 'count',
@@ -163,3 +170,12 @@ def get_top_spending_business(df: pd.DataFrame) -> StatisticModel:
     return StatisticModel(value=top_business[C.MONEY].values[0],
                           additional_info=user_interface_service.business_visits(top_business[C.BUSINESS].values[0],
                                                                                  top_business[N.COUNT].values[0]))
+
+
+def get_default_category(income: bool) -> TransactionCategory:
+    return TransactionCategory.UNKNOWN_INCOME if income else TransactionCategory.UNKNOWN_EXPENSE
+
+
+def add_missing_category(df: pd.DataFrame):
+    df[C.CATEGORY] = df.apply(
+        lambda row: row[C.CATEGORY] if row[C.CATEGORY] is not None else get_default_category(row[N.IS_INCOME]), axis=1)
