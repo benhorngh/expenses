@@ -36,7 +36,7 @@ class MoneyLover:
     @staticmethod
     def add_to_wallet(account_id, transaction_date: datetime, amount, category_id, note):
         t_date = f'{transaction_date.year}-{str(transaction_date.month).zfill(2)}-{str(transaction_date.day).zfill(2)}'
-        t_note = note.replace('"', '')
+        t_note = note.replace('"', '') if note else ''
         body = f'"with": [], "account": "{account_id}", "category": "{category_id}", "amount": {amount}, "note": "{t_note}" , "displayDate": "{t_date}", "event": "", "exclude_report": false, "longtitude": 0, "latitude": 0, "addressName": "", "addressDetails": "", "addressIcon": "", "image": ""'
         body = '{' + body + '}'
         res = requests.post('https://web.moneylover.me/api/transaction/add', data=body.encode('utf-8'),
