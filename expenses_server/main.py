@@ -5,13 +5,12 @@ from starlette.middleware.cors import CORSMiddleware
 from expenses_server.api.records import records_router
 from expenses_server.common import settings, utils
 from expenses_server.api.statistics import statistics_router
-from expenses_server.database.dummy_db import DummyDB
 
 app = FastAPI()
 
 
 def init_settings():
-    settings.init_settings(db_instance=DummyDB())
+    settings.init_settings()
 
 
 def init_data():

@@ -5,7 +5,7 @@ from expenses_server.common.settings import AppSettings
 
 
 def get_statistics() -> StatisticsResponseModel:
-    data = AppSettings.settings.db_instance.get_all_transaction()
+    data = AppSettings.globals.transaction_db.get_all_data()
     data_manipulation.prepare_date(data)
     statistics_results = StatisticsResponseModel(expenses=data_manipulation.get_bank_total_expense(data),
                                                  income=data_manipulation.get_bank_total_income(data),

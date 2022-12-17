@@ -133,3 +133,15 @@ class N(str, Enum):
     MONTH = 'n_date'
     COUNT = 'count'
     AVG = 'avg'
+
+
+class RuleType(str, Enum):
+    transaction_id = 'TRANSACTION_ID'
+    business_name = 'BUSINESS_NAME'
+
+
+class Rule(BaseModel):
+    r_type: RuleType
+    value: str
+    category: TransactionCategory
+
