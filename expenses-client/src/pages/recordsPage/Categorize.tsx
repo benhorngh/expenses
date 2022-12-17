@@ -1,6 +1,7 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Stack, Typography } from "@mui/material";
+import { useState } from "react";
 import { useUpdateRecords } from "../../common/api";
 import { TransactionCategory } from "../../common/models";
 import CategorizeDialog, { CATEGORIES } from "./CategorizeDialog";
@@ -16,6 +17,7 @@ const getCategoryInfo = (category: TransactionCategory) => {
 };
 
 const Categorize: React.FC<CategorizeProps> = (props) => {
+  const [showDiaglog, setShowDialog] = useState(false);
   const changeRecordsCategory = useUpdateRecords();
   const onCategoryChange = async (category?: TransactionCategory) => {
     const data = {
@@ -28,25 +30,30 @@ const Categorize: React.FC<CategorizeProps> = (props) => {
   const categoryInfo = getCategoryInfo(props.currentCategory);
   return (
     <>
-      <CategorizeDialog
-        onSave={onCategoryChange}
-        category={props.currentCategory}
+      {showDiaglog && (
+        <CategorizeDialog
+          onSave={onCategoryChange}
+          category={props.currentCategory}
+          onClose={() => setShowDialog(false)}
+        />
+      )}
+      <Button
+        variant={categoryInfo ? "text" : "outlined"}
+        onClick={() => setShowDialog(!showDiaglog)}
       >
-        <Button variant={categoryInfo ? "text" : "outlined"}>
-          <Stack
-            direction="row"
-            spacing={1}
-            justifyContent="center"
-            alignItems="center"
-          >
-            <FontAwesomeIcon
-              icon={categoryInfo ? categoryInfo.icon : faPlus}
-              color="grey"
-            />
-            <Typography>{categoryInfo ? categoryInfo.text : "Add"}</Typography>
-          </Stack>
-        </Button>
-      </CategorizeDialog>
+        <Stack
+          direction="row"
+          spacing={1}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <FontAwesomeIcon
+            icon={categoryInfo ? categoryInfo.icon : faPlus}
+            color="grey"
+          />
+          <Typography>{categoryInfo ? categoryInfo.text : "Add"}</Typography>
+        </Stack>
+      </Button>
     </>
   );
 };

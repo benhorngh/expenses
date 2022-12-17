@@ -26,9 +26,8 @@ import { alpha, Stack, styled, Typography } from "@mui/material";
 import { COLOR_PALETTE } from "../../common/style/palette";
 
 interface CategorizeDialogProps {
-  children: React.ReactElement;
   category?: TransactionCategory;
-  onClose?: () => void;
+  onClose: () => void;
   onSave: (category?: TransactionCategory) => void;
 }
 
@@ -91,24 +90,16 @@ const CategoryOptionContainer = styled(Stack)<{ selected: boolean }>(
 );
 
 export default function CategorizeDialog(props: CategorizeDialogProps) {
-  const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = React.useState<TransactionCategory>(
     props.category
   );
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
-    setOpen(false);
     props.onClose();
   };
 
   const handleCancel = () => handleClose();
-  // const handleDone = () => {
-  //   saveAndClose(selected);
-  // };
+
   const saveAndClose = (selection?: TransactionCategory) => {
     props.onSave(selection);
     handleClose();
@@ -120,56 +111,54 @@ export default function CategorizeDialog(props: CategorizeDialogProps) {
   };
 
   return (
-    <div>
-      <Box onClick={handleClickOpen}>{props.children}</Box>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Categorize</DialogTitle>
-        <DialogContent>
-          <DialogContentText marginBottom={1}>
-            Select transactions cateogry
-          </DialogContentText>
-          <Box maxWidth="600px" flexWrap="wrap" display="flex">
-            {CATEGORIES.map((category) => (
-              <CategoryOptionContainer
-                selected={selected === category.name}
-                onClick={handleSelected(category.name)}
+    <Dialog open>
+      <DialogTitle>Categorize</DialogTitle>
+      <DialogContent>
+        <DialogContentText marginBottom={1}>
+          Select transactions cateogry
+        </DialogContentText>
+        <Box maxWidth="600px" flexWrap="wrap" display="flex">
+          {CATEGORIES.map((category, index) => (
+            <CategoryOptionContainer
+              key={index}
+              selected={selected === category.name}
+              onClick={handleSelected(category.name)}
+            >
+              <Stack
+                height="10%"
+                direction="row"
+                justifyContent="space-between"
               >
-                <Stack
-                  height="10%"
-                  direction="row"
-                  justifyContent="space-between"
-                >
-                  {selected === category.name ? (
-                    <FontAwesomeIcon
-                      icon={faCircleCheck}
-                      color="green"
-                      size="xl"
-                    />
-                  ) : (
-                    <Box visibility="hidden"> - </Box>
-                  )}
-                </Stack>
-                <Box
-                  height="50%"
-                  justifyContent="center"
-                  alignItems="center"
-                  display="flex"
-                  padding={1}
-                >
-                  <FontAwesomeIcon icon={category.icon} size="4x" />
-                </Box>
-                <Typography padding={1} textAlign="center">
-                  {category.text}
-                </Typography>
-              </CategoryOptionContainer>
-            ))}
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCancel}>Cancel</Button>
-          {/* <Button onClick={handleDone}>Done</Button> */}
-        </DialogActions>
-      </Dialog>
-    </div>
+                {selected === category.name ? (
+                  <FontAwesomeIcon
+                    icon={faCircleCheck}
+                    color="green"
+                    size="xl"
+                  />
+                ) : (
+                  <Box visibility="hidden"> - </Box>
+                )}
+              </Stack>
+              <Box
+                height="50%"
+                justifyContent="center"
+                alignItems="center"
+                display="flex"
+                padding={1}
+              >
+                <FontAwesomeIcon icon={category.icon} size="4x" />
+              </Box>
+              <Typography padding={1} textAlign="center">
+                {category.text}
+              </Typography>
+            </CategoryOptionContainer>
+          ))}
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleCancel}>Cancel</Button>
+        {/* <Button onClick={handleDone}>Done</Button> */}
+      </DialogActions>
+    </Dialog>
   );
 }
