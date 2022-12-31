@@ -10,16 +10,19 @@ import { TransactionCategory } from "../../common/models";
 import { faCreditCard } from "@fortawesome/free-regular-svg-icons";
 import {
   faBurger,
+  faBus,
   faCarSide,
   faChampagneGlasses,
   faCircleCheck,
   faDroplet,
+  faEyeSlash,
   faHouseChimney,
   faHouseUser,
   faKitchenSet,
   faMobileScreen,
   faMotorcycle,
   faSackDollar,
+  faShirt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { alpha, Stack, styled, Typography } from "@mui/material";
@@ -69,6 +72,14 @@ export const CATEGORIES = [
     icon: faMobileScreen,
     text: "Gadgets",
   },
+  { name: TransactionCategory.SHOPPING, icon: faShirt, text: "Shopping" },
+  {
+    name: TransactionCategory.TRANSPORTATION,
+    icon: faBus,
+    text: "Bus",
+  },
+
+  { name: TransactionCategory.IGNORE, icon: faEyeSlash, text: "Ignore" },
 ];
 
 const CategoryOptionContainer = styled(Stack)<{ selected: boolean }>(

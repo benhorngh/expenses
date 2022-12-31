@@ -33,6 +33,9 @@ export enum TransactionCategory {
   CAR = "car",
   GADGETS = "gadgets",
   BILLS = "bills",
+  IGNORE = "ignore",
+  SHOPPING = "shopping",
+  TRANSPORTATION = "transportation",
 }
 
 export enum TransactionType {
