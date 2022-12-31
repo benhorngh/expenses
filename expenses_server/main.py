@@ -35,3 +35,6 @@ if __name__ == "__main__":
     init_data()
     init_api()
     uvicorn.run(app, host='localhost')
+
+
+# TODO :: bug - adding rules not overrideing old rule

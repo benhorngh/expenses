@@ -20,6 +20,9 @@ class TransactionCategory(str, Enum):
     BILLS = 'bills'
     UNKNOWN_INCOME = 'unknown_income'
     UNKNOWN_EXPENSE = 'unknown_expense'
+    IGNORE = 'ignore'
+    SHOPPING = 'shopping'
+    TRANSPORTATION = 'transportation'
 
 
 class TransactionType(str, Enum):

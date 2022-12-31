@@ -43,6 +43,8 @@ def transactions_to_money_lover(wallet_name, transactions: List[Transaction]):
 
 
 def prepare_and_send_transaction(wallet_id: str, transaction: Transaction):
+    if transaction.category == TransactionCategory.IGNORE:
+        return
     try:
         add_to_money_lover_wallet(wallet_id, transaction)
     except:
